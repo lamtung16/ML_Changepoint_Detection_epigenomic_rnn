@@ -20,8 +20,30 @@ for dataset in datasets:
     combinations = product([dataset], num_layers, layer_size, test_fold)
     param_combinations.extend(combinations)
 
-# Create DataFrame and save it into csv
+# Create DataFrame
 params_df = pd.DataFrame(param_combinations, columns=['dataset', 'num_layers', 'layer_size', 'test_fold'])
+
+# Check for completed rows
+predictions_dir = 'predictions'  # Set the base directory for predictions
+completed_indices = []
+
+for index, row in params_df.iterrows():
+    dataset = row['dataset']
+    num_layers = row['num_layers']
+    layer_size = row['layer_size']
+    test_fold = row['test_fold']
+    
+    # Build the path to the prediction file
+    prediction_file = os.path.join(predictions_dir, f"{dataset}/{num_layers}layers_{layer_size}neurons_fold{test_fold}.csv")
+    
+    # Check if the file exists
+    if os.path.exists(prediction_file):
+        completed_indices.append(index)
+
+# Remove completed rows
+params_df = params_df.drop(completed_indices).reset_index(drop=True)
+
+# Save the updated DataFrame to CSV
 params_df.to_csv("params.csv", index=False)
 
 # CREATE RUN_ONE.SH
@@ -35,7 +57,7 @@ os.makedirs(output_dir, exist_ok=True)
 # Create SLURM script
 run_one_contents = f"""#!/bin/bash
 #SBATCH --array=0-{n_tasks-1}
-#SBATCH --time=48:00:00
+#SBATCH --time=01:00:00
 #SBATCH --mem=16GB
 #SBATCH --cpus-per-task=1
 #SBATCH --output={output_dir}/slurm-%A_%a.out
