@@ -1,0 +1,2 @@
+dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+ATAC_JV_adipose,2,8,2,1543,2.2745656967163086,1.6440986394882202,2.2858004570007324,4.536564826965332

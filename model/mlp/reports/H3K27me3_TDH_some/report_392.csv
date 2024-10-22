@@ -1,0 +1,2 @@
+dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K27me3_TDH_some,2,64,1,61,2.0263350009918213,0.8911741971969604,5.529882907867432,1.7950942516326904

@@ -1,0 +1,2 @@
+dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K4me3_XJ_immune,2,16,1,909,1.4289439916610718,1.6407461166381836,1.7451452016830444,3.5506813526153564

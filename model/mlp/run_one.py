@@ -36,7 +36,7 @@ os.makedirs(f'reports/{dataset}', exist_ok=True)
 
 # Early stopping parameters
 patience = 100
-max_epochs = 1
+max_epochs = 100000
 
 
 # try to use gpu if available
