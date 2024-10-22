@@ -1,0 +1,9 @@
+method,fold,acc
+mlp,1,83.0
+mlp,2,57.99999999999999
+mmit,1,90.0
+mmit,2,68.0
+linear_L1reg,1,95.0
+linear_L1reg,2,92.0
+AFT_XGboost,1,91.0
+AFT_XGboost,2,92.0
