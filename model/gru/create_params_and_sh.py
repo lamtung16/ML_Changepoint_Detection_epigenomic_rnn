@@ -13,7 +13,7 @@ for dataset in datasets:
     fold_df = pd.read_csv(os.path.join(folder_path, dataset, 'folds.csv'))
     
     compress_types = ['mean', 'median']
-    compress_sizes = [1000, 2000]
+    compress_sizes = [100, 1000, 2000]
 
     test_fold = sorted(fold_df['fold'].unique())
     num_layers = [1, 2]
@@ -63,7 +63,7 @@ os.makedirs(output_dir, exist_ok=True)
 run_one_contents = f"""#!/bin/bash
 #SBATCH --array=0-{n_tasks-1}
 #SBATCH --time=24:00:00
-#SBATCH --mem=2GB
+#SBATCH --mem=4GB
 #SBATCH --cpus-per-task=1
 #SBATCH --output={output_dir}/slurm-%A_%a.out
 #SBATCH --error={output_dir}/slurm-%A_%a.out

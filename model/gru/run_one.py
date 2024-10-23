@@ -26,8 +26,8 @@ params = params_df.iloc[param_row]
 dataset    = params['dataset']
 compress_type = params['compress_type']
 compress_size = params['compress_size']
-num_layers = params['num_layers']
-hidden_size = params['hidden_size']
+num_layers = int(params['num_layers'])
+hidden_size = int(params['hidden_size'])
 test_fold  = params['test_fold']
 
 
@@ -38,7 +38,7 @@ os.makedirs(f'reports/{dataset}/{compress_type}/{compress_size}', exist_ok=True)
 
 # Early stopping parameters
 patience = 50
-max_epochs = 1
+max_epochs = 1000
 
 
 # try to use gpu if available
@@ -111,11 +111,13 @@ with lzma.open(file_path, 'rt') as file:
 # Group sequences by 'sequenceID'
 seqs = tuple(signal_df.groupby('sequenceID'))
 
-# Load fold and target data
-folds_df = pd.read_csv(f'../../training_data/{dataset}/folds.csv')
-target_df = pd.read_csv(f'../../training_data/{dataset}/target.csv')
+# Extract sequence IDs from seqs
+sequence_ids = [group[0] for group in seqs]
 
-print(len(seqs), target_df.shape)
+# Load fold and target data
+folds_df = pd.read_csv(f'../../training_data/{dataset}/folds.csv').set_index('sequenceID').loc[sequence_ids].reset_index()
+target_df = pd.read_csv(f'../../training_data/{dataset}/target.csv').set_index('sequenceID').loc[sequence_ids].reset_index()
+
 
 # Prepare CSV file for logging
 report_path = f'reports/{dataset}/{compress_type}/{compress_size}/report_{param_row}.csv'
@@ -243,9 +245,6 @@ if best_model_state is not None:
 
 # Test the model and collect outputs
 pred_lldas = test_model(model, test_seqs)
-
-# Save model parameters
-torch.save(model.state_dict(), f'saved_models/{dataset}/{compress_type}/{compress_size}/{num_layers}layers_{hidden_size}features_fold{test_fold}.pth')
 
 # Save predictions to CSV
 lldas_df = pd.DataFrame(list(zip(test_ids, pred_lldas)), columns=['sequenceID', 'llda'])
