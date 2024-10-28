@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K27ac-H3K4me3_TDHAM_BP,mean,100,1,8,2,129,0.35441043418335266,0.4271140680848175,0.3939951646207559,228496.7052052021

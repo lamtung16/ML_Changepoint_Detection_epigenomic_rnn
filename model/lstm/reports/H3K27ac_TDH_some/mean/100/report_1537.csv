@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K27ac_TDH_some,mean,100,1,2,2,9,1.9656671947903104,0.6219344139099121,1.439583243155966,110.6571593284607

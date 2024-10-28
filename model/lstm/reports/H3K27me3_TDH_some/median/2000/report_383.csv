@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K27me3_TDH_some,median,2000,2,16,2,4,1.2847251437959217,1.343751589457194,1.4944584965705872,38.73735761642456

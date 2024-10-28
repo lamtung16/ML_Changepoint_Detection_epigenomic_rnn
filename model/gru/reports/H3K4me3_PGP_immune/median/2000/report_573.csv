@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K4me3_PGP_immune,median,2000,2,8,2,57,1.086343102750525,1.0291725849283153,1.229560827439831,5187.50720000267

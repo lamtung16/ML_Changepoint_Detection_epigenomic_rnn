@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K36me3_AM_immune,median,1000,1,16,2,11,0.32809504067025536,0.2569691340128581,0.2585714763065554,7027.774334907532

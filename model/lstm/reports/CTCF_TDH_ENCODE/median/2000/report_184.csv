@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+CTCF_TDH_ENCODE,median,2000,2,2,1,120,0.46461250843145907,0.44307479858398435,0.4391921474820092,96.38547039031982

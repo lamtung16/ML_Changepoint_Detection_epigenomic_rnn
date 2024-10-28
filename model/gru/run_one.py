@@ -56,7 +56,7 @@ class SquaredHingeLoss(nn.Module):
         loss_low = torch.relu(low - predicted + self.margin)
         loss_high = torch.relu(predicted - high + self.margin)
         loss = loss_low + loss_high
-        return torch.mean(torch.square(loss))
+        return torch.mean(loss)
 
 
 # MLP models
@@ -70,7 +70,7 @@ class GRUModel(nn.Module):
         gru_out, _ = self.gru(x)                            # Pass sequence through GRU    
         last_out = gru_out[:, -1, :]                        # Take the hidden state of the last time step 
         x = self.fc(last_out)                               # Linear combination         
-        x = torch.relu(x - 5) - torch.relu(x - 25) + 5      # clamp between 5 and 25
+        x = 25 * torch.sigmoid(x)                           # clamp between 0 and 25
         return x
 
 
@@ -159,7 +159,6 @@ patience_counter = 0              # Early stopping patience counter
 best_model_state = None           # Store the best model parameters
 stop_epoch = 0                    # Epoch when training stops
 
-# Training loop
 for epoch in range(max_epochs):
     # Shuffle training sequences and targets
     combined = list(zip(train_seqs, y_train))
@@ -183,6 +182,7 @@ for epoch in range(max_epochs):
 
         if torch.isnan(loss).any():  # Check for NaN loss
             nan_flag = True
+            print(f"NaN encountered in epoch {epoch + 1}")
             break
 
         # Backward pass and optimize
@@ -200,6 +200,12 @@ for epoch in range(max_epochs):
     # Calculate validation and test losses
     avg_val_loss = get_loss_value(model, val_seqs, y_val, criterion)
     avg_test_loss = get_loss_value(model, test_seqs, y_test, criterion)
+
+    # Print epoch stats
+    print(f"Epoch {epoch + 1}/{max_epochs} - "
+          f"Train Loss: {avg_train_loss:.4f}, "
+          f"Val Loss: {avg_val_loss:.4f}, "
+          f"Test Loss: {avg_test_loss:.4f}")
 
     # Early stopping based on validation loss
     if avg_val_loss < best_val_loss:

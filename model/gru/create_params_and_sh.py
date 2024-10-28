@@ -39,7 +39,7 @@ for index, row in params_df.iterrows():
     test_fold = row['test_fold']
     
     # Build the path to the prediction file
-    prediction_file = os.path.join(predictions_dir, f"{dataset}/{num_layers}layers_{layer_size}neurons_fold{test_fold}.csv")
+    prediction_file = os.path.join(predictions_dir, f"{dataset}/{compress_type}/{compress_size}/{num_layers}layers_{layer_size}neurons_fold{test_fold}.csv")
     
     # Check if the file exists
     if os.path.exists(prediction_file):
@@ -62,9 +62,9 @@ os.makedirs(output_dir, exist_ok=True)
 # Create SLURM script
 run_one_contents = f"""#!/bin/bash
 #SBATCH --array=0-{n_tasks-1}
-#SBATCH --time=24:00:00
-#SBATCH --mem=4GB
-#SBATCH --cpus-per-task=1
+#SBATCH --time=72:00:00
+#SBATCH --mem=8GB
+#SBATCH --cpus-per-task=2
 #SBATCH --output={output_dir}/slurm-%A_%a.out
 #SBATCH --error={output_dir}/slurm-%A_%a.out
 #SBATCH --job-name=gru

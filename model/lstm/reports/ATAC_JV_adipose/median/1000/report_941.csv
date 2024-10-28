@@ -1,0 +1,2 @@
+dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+ATAC_JV_adipose,median,1000,2,8,2,178,0.8189597456795829,0.8289320035414263,1.0824767360842324,872.0713102817535
