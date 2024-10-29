@@ -62,9 +62,10 @@ os.makedirs(output_dir, exist_ok=True)
 # Create SLURM script
 run_one_contents = f"""#!/bin/bash
 #SBATCH --array=0-{n_tasks-1}
-#SBATCH --time=72:00:00
-#SBATCH --mem=8GB
-#SBATCH --cpus-per-task=2
+#SBATCH --time=100:00:00
+#SBATCH --mem=16GB
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:1
 #SBATCH --output={output_dir}/slurm-%A_%a.out
 #SBATCH --error={output_dir}/slurm-%A_%a.out
 #SBATCH --job-name=gru

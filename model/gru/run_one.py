@@ -30,6 +30,8 @@ num_layers = int(params['num_layers'])
 hidden_size = int(params['hidden_size'])
 test_fold  = params['test_fold']
 
+print(dataset, compress_type, compress_size, num_layers, hidden_size, test_fold)
+
 
 # create folder for predictions and reports
 os.makedirs(f'predictions/{dataset}/{compress_type}/{compress_size}', exist_ok=True)
@@ -43,6 +45,7 @@ max_epochs = 1000
 
 # try to use gpu if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
 
 
 # Hinged Square Loss
