@@ -1,2 +1,0 @@
-dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K36me3_TDH_ENCODE,median,1000,2,8,2,5,1.1961530517129337,0.5726682874891493,1.190787274496896,12.234962224960327
