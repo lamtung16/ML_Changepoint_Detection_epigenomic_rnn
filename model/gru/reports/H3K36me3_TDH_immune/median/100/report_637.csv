@@ -1,2 +1,0 @@
-dataset,compress_type,compress_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K36me3_TDH_immune,median,100,2,8,2,2,0.9804292917251587,0.6881303787231445,0.8128747379078585,6492.186750173569

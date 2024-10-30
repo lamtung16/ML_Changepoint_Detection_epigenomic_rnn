@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
+os.makedirs('pngs', exist_ok=True)
 
 datasets = [name for name in os.listdir('../training_data') if os.path.isdir(os.path.join('../training_data', name))]
 

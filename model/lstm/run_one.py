@@ -9,6 +9,7 @@ import os
 import sys
 import lzma
 
+
 # Set random seed for reproducibility
 random_seed = 42
 torch.manual_seed(random_seed)
@@ -16,55 +17,70 @@ torch.cuda.manual_seed_all(random_seed)
 np.random.seed(random_seed)
 random.seed(random_seed)
 
+
 # Load parameters
 params_df = pd.read_csv("params.csv")
 param_row = int(sys.argv[1])
 params = params_df.iloc[param_row]
 
-dataset = params['dataset']
+dataset       = params['dataset']
+loss_type     = params['loss_type']
 compress_type = params['compress_type']
 compress_size = params['compress_size']
-num_layers = int(params['num_layers'])
-hidden_size = int(params['hidden_size'])
-test_fold = params['test_fold']
+input_size    = params['input_size']
+num_layers    = int(params['num_layers'])
+hidden_size   = int(params['hidden_size'])
+test_fold     = params['test_fold']
 
-# Create folder for predictions and reports
-os.makedirs(f'predictions/{dataset}/{compress_type}/{compress_size}', exist_ok=True)
-os.makedirs(f'reports/{dataset}/{compress_type}/{compress_size}', exist_ok=True)
+print(dataset, compress_type, compress_size, num_layers, hidden_size, test_fold)
+
+
+# create folder for predictions and reports
+os.makedirs(f'predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}', exist_ok=True)
+os.makedirs(f'reports/{dataset}/{loss_type}/{compress_type}/{compress_size}', exist_ok=True)
+
 
 # Early stopping parameters
 patience = 50
 max_epochs = 1000
 
-# Try to use GPU if available
+
+# try to use gpu if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
+
 
 # Hinged Square Loss
 class SquaredHingeLoss(nn.Module):
-    def __init__(self, margin=1):
+    def __init__(self, loss_type, margin=1):
         super(SquaredHingeLoss, self).__init__()
         self.margin = margin
+        self.loss_type = loss_type
 
     def forward(self, predicted, y):
         low, high = y[:, 0:1], y[:, 1:2]
         loss_low = torch.relu(low - predicted + self.margin)
         loss_high = torch.relu(predicted - high + self.margin)
         loss = loss_low + loss_high
-        return torch.mean(loss)
+        if self.loss_type == "square":
+            return torch.mean(torch.square(loss))
+        elif self.loss_type == "linear":
+            return torch.mean(loss)
+
 
 # LSTM model
 class LSTMModel(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers):
         super(LSTMModel, self).__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)  # LSTM
-        self.fc = nn.Linear(hidden_size, 1)                                          # Linear
+        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)  # LSTM layer
+        self.fc = nn.Linear(hidden_size, 1)                                         # Linear layer
 
-    def forward(self, x):               
-        lstm_out, _ = self.lstm(x)                            # Pass sequence through LSTM    
-        last_out = lstm_out[:, -1, :]                        # Take the hidden state of the last time step 
-        x = self.fc(last_out)                               # Linear combination         
-        x = 25 * torch.sigmoid(x)                           # Clamp between 0 and 25
+    def forward(self, x):
+        lstm_out, _ = self.lstm(x)                     # Pass sequence through LSTM
+        last_out = lstm_out[:, -1, :]                  # Take the hidden state of the last time step
+        x = self.fc(last_out)                          # Linear combination
         return x
+
 
 # Function to generate the predictions
 def test_model(model, inputs):
@@ -79,6 +95,7 @@ def test_model(model, inputs):
 
     return predictions
 
+
 # Function to compute loss value
 def get_loss_value(model, test_seqs, y_test, criterion):
     total_test_loss = 0
@@ -92,6 +109,7 @@ def get_loss_value(model, test_seqs, y_test, criterion):
 
     avg_test_loss = total_test_loss / len(test_seqs)                    # Calculate average loss
     return avg_test_loss
+
 
 # Load sequence data from CSV
 file_path = f'../../sequence_data/{dataset}/{compress_type}/{compress_size}/profiles.csv.xz'
@@ -108,13 +126,15 @@ sequence_ids = [group[0] for group in seqs]
 folds_df = pd.read_csv(f'../../training_data/{dataset}/folds.csv').set_index('sequenceID').loc[sequence_ids].reset_index()
 target_df = pd.read_csv(f'../../training_data/{dataset}/target.csv').set_index('sequenceID').loc[sequence_ids].reset_index()
 
+
 # Prepare CSV file for logging
-report_path = f'reports/{dataset}/{compress_type}/{compress_size}/report_{param_row}.csv'
-report_header = ['dataset', 'compress_type', 'compress_size', 'num_layers', 'hidden_size', 'test_fold', 'stop_epoch', 'train_loss', 'val_loss', 'test_loss', 'time']
+report_path = f'reports/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}_{num_layers}_{hidden_size}_{test_fold}.csv'
+report_header = ['dataset', 'loss_type', 'compress_type', 'compress_size', 'input_size', 'num_layers', 'hidden_size', 'test_fold', 'stop_epoch', 'train_loss', 'val_loss', 'test_loss', 'time']
 if not os.path.exists(report_path):
     pd.DataFrame(columns=report_header).to_csv(report_path, index=False)
 
-# Main
+
+# main
 # Record start time
 fold_start_time = time.time()
 
@@ -127,15 +147,15 @@ test_seqs = [torch.tensor(seq[1]['signal'].to_numpy(), dtype=torch.float32) for 
 
 # Prepare target values for train and testing
 target_df_train = target_df[target_df['sequenceID'].isin(train_ids)]
-target_df_test = target_df[target_df['sequenceID'].isin(test_ids)]
+target_df_test  = target_df[target_df['sequenceID'].isin(test_ids)]
 y_train = torch.tensor(target_df_train.iloc[:, 1:].to_numpy(), dtype=torch.float32)
-y_test = torch.tensor(target_df_test.iloc[:, 1:].to_numpy(), dtype=torch.float32)
+y_test  = torch.tensor(target_df_test.iloc[:, 1:].to_numpy(), dtype=torch.float32)
 
 # Split training data into subtrain and validation sets
 train_seqs, val_seqs, y_train, y_val = train_test_split(train_seqs, y_train, test_size=0.2, random_state=42)
 
 # Initialize the LSTM model, loss function, and optimizer
-model = LSTMModel(1, hidden_size, num_layers).to(device)    # Move model to device
+model = LSTMModel(input_size, hidden_size, num_layers).to(device)
 criterion = SquaredHingeLoss().to(device)                  # Move loss function to device
 optimizer = torch.optim.Adam(model.parameters())
 
@@ -218,8 +238,10 @@ fold_duration = time.time() - fold_start_time
 # Save results to CSV
 report_entry = {
     'dataset': dataset,
+    'loss_type': loss_type,
     'compress_type': compress_type,
     'compress_size': compress_size,
+    'input_size': input_size,
     'num_layers': num_layers,
     'hidden_size': hidden_size,
     'test_fold': test_fold,
@@ -242,4 +264,4 @@ pred_lldas = test_model(model, test_seqs)
 
 # Save predictions to CSV
 lldas_df = pd.DataFrame(list(zip(test_ids, pred_lldas)), columns=['sequenceID', 'llda'])
-lldas_df.to_csv(f'predictions/{dataset}/{compress_type}/{compress_size}/{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv', index=False)
+lldas_df.to_csv(f'predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}input_{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv', index=False)
