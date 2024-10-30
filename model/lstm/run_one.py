@@ -156,7 +156,7 @@ train_seqs, val_seqs, y_train, y_val = train_test_split(train_seqs, y_train, tes
 
 # Initialize the LSTM model, loss function, and optimizer
 model = LSTMModel(input_size, hidden_size, num_layers).to(device)
-criterion = SquaredHingeLoss().to(device)                  # Move loss function to device
+criterion = SquaredHingeLoss(loss_type = loss_type).to(device)                  # Move loss function to device
 optimizer = torch.optim.Adam(model.parameters())
 
 # Variables for early stopping

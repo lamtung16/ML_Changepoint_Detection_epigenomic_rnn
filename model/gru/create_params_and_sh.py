@@ -16,7 +16,7 @@ for dataset in datasets:
     compress_types = ['mean', 'median']
     compress_sizes = [100, 1000, 2000]
     
-    input_sizes = [1, 2]
+    input_sizes = [1]
     test_fold = sorted(fold_df['fold'].unique())
     num_layers = [1, 2]
     hidden_size = [2, 4, 8, 16]
