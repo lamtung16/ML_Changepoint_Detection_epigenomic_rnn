@@ -8,6 +8,7 @@ datasets = [name for name in os.listdir('training_data') if os.path.isdir(os.pat
 
 
 model = sys.argv[1]
+loss_type = sys.argv[2]
 n_best_model = 8
 
 
@@ -40,6 +41,7 @@ for dataset in datasets:
     # Load the necessary CSV files
     cv_df = pd.read_csv(f"model/{model}/stat.csv")
     cv_df = cv_df[cv_df['dataset'] == dataset]
+    cv_df = cv_df[cv_df['loss_type'] == loss_type]
     evaluation_df = pd.read_csv(f'training_data/{dataset}/evaluation.csv')
     fold_df = pd.read_csv(f'training_data/{dataset}/folds.csv')
 
@@ -63,11 +65,12 @@ for dataset in datasets:
         for _, row in top_rows.iterrows():
             compress_type = row['compress_type']
             compress_size = row['compress_size']
+            input_size = row['input_size']
             num_layers = row['num_layers']
             hidden_size = row['hidden_size']
            
             # Load the prediction CSV
-            pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{compress_type}/{compress_size}/{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
+            pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}input_{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
             pred_df.fillna(0, inplace=True)
            
             # Get the set of sequenceIDs in this pred_df
@@ -80,11 +83,12 @@ for dataset in datasets:
         for _, row in top_rows.iterrows():
             compress_type = row['compress_type']
             compress_size = row['compress_size']
+            input_size = row['input_size']
             num_layers = row['num_layers']
             hidden_size = row['hidden_size']
            
             # Load the prediction CSV
-            pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{compress_type}/{compress_size}/{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
+            pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}input_{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
             pred_df.fillna(0, inplace=True)
            
             # Filter pred_df to include only common sequenceIDs and sort by sequenceID
@@ -104,4 +108,4 @@ for dataset in datasets:
         acc = get_acc(eval_df, pred_df)
        
         # Save the result to the CSV file
-        add_row_to_csv('acc_rate_csvs/' + dataset + '.csv', ['method', 'fold', 'acc'], [f'{model}', test_fold, acc])
+        add_row_to_csv('acc_rate_csvs/' + dataset + '.csv', ['method', 'fold', 'acc'], [f'{model}-{loss_type}', test_fold, acc])
