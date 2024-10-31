@@ -1,2 +1,0 @@
-dataset,loss_type,compress_type,compress_size,input_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K36me3_TDH_other,linear,mean,1000,1,1,8,1,67,0.7425997257232666,0.4057908058166504,0.589976167678833,33.53778958320618

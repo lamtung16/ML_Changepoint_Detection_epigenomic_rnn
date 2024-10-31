@@ -1,2 +1,0 @@
-dataset,loss_type,compress_type,compress_size,input_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K4me3_PGP_immune,square,mean,1000,1,2,2,2,288,1.9549263796492338,1.9783555590065902,2.569211760692058,534.0483424663544
