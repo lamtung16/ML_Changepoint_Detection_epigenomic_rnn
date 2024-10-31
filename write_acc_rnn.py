@@ -71,7 +71,6 @@ for dataset in datasets:
            
             # Load the prediction CSV
             pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}input_{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
-            pred_df.fillna(0, inplace=True)
            
             # Get the set of sequenceIDs in this pred_df
             current_ids = set(pred_df['sequenceID'])
@@ -89,13 +88,13 @@ for dataset in datasets:
            
             # Load the prediction CSV
             pred_df = pd.read_csv(f'model/{model}/predictions/{dataset}/{loss_type}/{compress_type}/{compress_size}/{input_size}input_{num_layers}layers_{hidden_size}neurons_fold{test_fold}.csv')
-            pred_df.fillna(0, inplace=True)
            
             # Filter pred_df to include only common sequenceIDs and sort by sequenceID
             pred_df = pred_df[pred_df['sequenceID'].isin(common_ids)].sort_values(by='sequenceID')
            
             # Append the 'llda' predictions to the list
-            pred_list.append(pred_df['llda'].values)
+            if pred_df['llda'].notna().any():
+                pred_list.append(pred_df['llda'].values)
 
 
         # Step 3: Calculate the average of the 'llda' predictions across the models

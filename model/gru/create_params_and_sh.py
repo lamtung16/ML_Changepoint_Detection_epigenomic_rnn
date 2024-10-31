@@ -47,7 +47,9 @@ for index, row in params_df.iterrows():
     
     # Check if the file exists
     if os.path.exists(prediction_file):
-        completed_indices.append(index)
+        df = pd.read_csv(prediction_file)
+        if not df['llda'].isnull().all():
+            completed_indices.append(index)
 
 # Remove completed rows
 params_df = params_df.drop(completed_indices).reset_index(drop=True)
