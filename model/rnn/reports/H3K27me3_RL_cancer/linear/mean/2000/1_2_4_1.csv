@@ -1,0 +1,2 @@
+dataset,loss_type,compress_type,compress_size,input_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K27me3_RL_cancer,linear,mean,2000,1,2,4,1,269,0.9206004619598389,1.658374309539795,1.0528593866448654,1031.9167032241821

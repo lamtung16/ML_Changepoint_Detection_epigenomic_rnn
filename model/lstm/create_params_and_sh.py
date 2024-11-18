@@ -69,8 +69,8 @@ os.makedirs(error_dir, exist_ok=True)
 # Create SLURM script
 run_one_contents = f"""#!/bin/bash
 #SBATCH --array=0-{n_tasks-1}
-#SBATCH --time=240:00:00
-#SBATCH --mem=16GB
+#SBATCH --time=24:00:00
+#SBATCH --mem=6GB
 #SBATCH --cpus-per-task=1
 #SBATCH --output={output_dir}/slurm-%A_%a.out
 #SBATCH --error={error_dir}/slurm-%A_%a.out

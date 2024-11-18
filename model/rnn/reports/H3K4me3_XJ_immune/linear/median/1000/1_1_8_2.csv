@@ -1,0 +1,2 @@
+dataset,loss_type,compress_type,compress_size,input_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K4me3_XJ_immune,linear,median,1000,1,1,8,2,67,1.037618246571771,1.0034231980641684,1.2763848150930097,1981.811439037323

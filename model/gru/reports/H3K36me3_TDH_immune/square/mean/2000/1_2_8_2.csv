@@ -1,0 +1,2 @@
+dataset,loss_type,compress_type,compress_size,input_size,num_layers,hidden_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
+H3K36me3_TDH_immune,square,mean,2000,1,2,8,2,260,0.8734147137147374,0.6349135637283325,0.582809700493646,2145.469767808914
