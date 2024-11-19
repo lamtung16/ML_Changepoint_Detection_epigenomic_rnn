@@ -1,2 +1,0 @@
-dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K27ac-H3K4me3_TDHAM_BP,1,8,4,11913,0.7778221368789673,1.1100515127182007,0.8447207808494568,22.846781730651855

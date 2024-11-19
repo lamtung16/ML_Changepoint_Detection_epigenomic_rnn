@@ -1,2 +1,0 @@
-dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K4me3_PGP_immune,3,256,1,173,2.0228288173675537,1.9339438676834106,3.8324713706970215,3.134641408920288

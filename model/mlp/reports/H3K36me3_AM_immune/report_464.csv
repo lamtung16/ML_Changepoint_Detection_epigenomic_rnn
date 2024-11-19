@@ -1,2 +1,0 @@
-dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K36me3_AM_immune,3,4,1,1737,0.4061591625213623,0.2625102698802948,0.4572420120239258,5.506629705429077

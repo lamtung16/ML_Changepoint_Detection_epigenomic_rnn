@@ -1,2 +1,0 @@
-dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-H3K27me3_RL_cancer,2,32,1,466,2.52709698677063,10.435898780822754,3.9388585090637207,2.330475330352783

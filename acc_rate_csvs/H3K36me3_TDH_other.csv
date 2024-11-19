@@ -7,9 +7,9 @@ linear_L1reg,1,95.0
 linear_L1reg,2,92.0
 AFT_XGboost,1,91.0
 AFT_XGboost,2,92.0
-lstm-linear,1,95.6989247311828
-lstm-linear,2,92.47311827956987
 lstm-square,1,95.6989247311828
 lstm-square,2,92.47311827956987
 rnn-square,1,95.6989247311828
-rnn-square,2,92.47311827956989
+rnn-square,2,92.47311827956987
+constant,1,75.0
+constant,2,79.0

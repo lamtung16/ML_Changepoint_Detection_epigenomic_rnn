@@ -1,2 +1,0 @@
-dataset,num_layers,layer_size,test_fold,stop_epoch,train_loss,val_loss,test_loss,time
-CTCF_TDH_ENCODE,2,32,2,1230,0.32286345958709717,1.060147762298584,0.8970332741737366,4.1130735874176025
