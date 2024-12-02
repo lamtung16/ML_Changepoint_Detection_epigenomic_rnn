@@ -75,6 +75,7 @@ run_one_contents = f"""#!/bin/bash
 #SBATCH --output={output_dir}/slurm-%A_%a.out
 #SBATCH --error={error_dir}/slurm-%A_%a.out
 #SBATCH --job-name=gru
+#SBATCH --gpus=1
 
 python run_one.py $SLURM_ARRAY_TASK_ID
 """

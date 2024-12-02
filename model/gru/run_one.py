@@ -42,7 +42,7 @@ os.makedirs(f'reports/{dataset}/{loss_type}/{compress_type}/{compress_size}', ex
 
 # Early stopping parameters
 patience = 50
-max_epochs = 1000
+max_epochs = 500
 
 
 # try to use gpu if available
