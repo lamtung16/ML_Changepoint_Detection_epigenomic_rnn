@@ -34,7 +34,7 @@ for i, model in enumerate(['rnn', 'lstm', 'gru']):
     axes[i].get_legend().set_visible(False)
 
     # Add labels and title for each subplot
-    axes[i].set_xlabel("Padding Window Size")
+    axes[i].set_xlabel("Pooling Window Size")
     axes[i].set_ylabel("Log of Average Val Loss")
     axes[i].set_title(f"{model}", loc='left')
     axes[i].grid(True)
@@ -43,12 +43,10 @@ for i, model in enumerate(['rnn', 'lstm', 'gru']):
 handles, labels = axes[0].get_legend_handles_labels()
 
 # Add the global legend at the top center of the figure
-fig.legend(handles, labels, title='Padding method', loc='upper right', ncol=3)
+fig.legend(handles, labels, title='Pooling method', loc='upper right', ncol=3)
 
 # Adjust layout and ensure the legend doesn't overlap
 plt.tight_layout(rect=[0, 0, 1, 0.95])  # Adjust for the space needed for the legend
 
 # Display the plot
-plt.savefig('analyze_pngs/padding_window_size_vs_log_val_loss.png')
-
-
+plt.savefig('analyze_pngs/pooling_window_size_vs_log_val_loss.png')
