@@ -7,12 +7,6 @@ import seaborn as sns
 # %%
 loss_type = 'square'
 
-# %%
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-
 # Create a single figure with 3 subplots (1 row, 3 columns)
 fig, axes = plt.subplots(1, 3, figsize=(10, 3), sharey=True)
 
